@@ -2077,6 +2077,8 @@ def find_picks(
         
     return np.asarray(peaks_value), np.asarray(peaks_mean), np.asarray(peaks_std)
 
+
+
 def get_picks(
         picks,
         buffer_length=int(2. * cfg.SAMPLING_RATE_HZ),
@@ -2124,11 +2126,11 @@ def get_picks(
                 picks.loc[sta, f"{ph}{col}"] = picks.loc[sta, f"{ph}{col}"][valid_picks]
         search_S_pick = True
         search_P_pick = True
-        if len(picks.loc[sta, "S_picks"]) == 0:
+        if len(picks.loc[sta, "S_picks"].reshape(-1)) == 0:
             # if no valid S pick: fill in with nan
             picks.loc[sta, s_columns] = np.nan
             search_S_pick = False
-        if len(picks.loc[sta, "P_picks"]) == 0:
+        if len(picks.loc[sta, "P_picks"].reshape(-1)) == 0:
             # if no valid P pick: fill in with nan
             picks.loc[sta, p_columns] = np.nan
             search_P_pick = False
@@ -2153,13 +2155,13 @@ def get_picks(
                 picks.loc[sta, s_columns] = np.nan
             else:
                 for col in s_columns:
-                    picks.loc[sta, col] = picks.loc[sta, col][best_S_trigger]
+                    picks.loc[sta, col] = picks.loc[sta, col].reshape(-1)[best_S_trigger]
             # update P picks: keep only those that are before the best S pick
             if search_P_pick:
                 valid_P_picks = picks.loc[sta, "P_picks"] < picks.loc[sta, "S_picks"]
                 for col in p_columns:
-                    picks.loc[sta, col] = picks.loc[sta, col][valid_P_picks]
-                if len(picks.loc[sta, "P_picks"]) == 0:
+                    picks.loc[sta, col] = picks.loc[sta, col].reshape(-1)[valid_P_picks]
+                if len(picks.loc[sta, "P_picks"].reshape(-1)) == 0:
                     # if no valid P pick: fill in with nan
                     picks.loc[sta, p_columns] = np.nan
                     search_P_pick = False
@@ -2184,11 +2186,10 @@ def get_picks(
                 picks.loc[sta, p_columns] = np.nan
             else:
                 for col in p_columns:
-                    picks.loc[sta, col] = picks.loc[sta, col][best_P_trigger]
+                    picks.loc[sta, col] = picks.loc[sta, col].reshape(-1)[best_P_trigger]
     for col in picks:
         picks[col] = np.float32(picks[col])
     return picks
-
 def _detect_peaks(
     x,
     mph=None,
