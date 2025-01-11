@@ -3,7 +3,7 @@
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-!This package is under construction!
+!This package is under construction! <br>
 
 This repository contains instructions and scripts for setting up and running the **Reagle Microseismic Pipeline**. Follow the steps below to create and configure the environment, build required libraries, and install packages.
 ## Creating Conda Environment
@@ -17,7 +17,7 @@ conda install pytorch=2.3.1 torchvision torchaudio=2.3.1 pytorch-cuda=11.8 -c py
 conda install pytorch-cluster=1.6.3 -c pyg  
 conda install pytorch-scatter=2.1.2 -c pyg  
 conda install -c conda-forge scikit-fmm  
-conda install gcc  
+conda install gcc
 conda install -c nvidia cuda-nvcc cuda-toolkit  
 ```
 ## Installing beam power
